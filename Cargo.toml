@@ -1,12 +1,11 @@
 [package]
 name = "rmk-urchin"
 version = "0.1.0"
-authors = ["Haobo Gu <haobogu@outlook.com>"]
+edition = "2021"
 description = "Keyboard firmware written in Rust"
+readme = "README.md"
 homepage = "https://github.com/haobogu/rmk"
 repository = "https://github.com/haobogu/rmk"
-readme = "README.md"
-edition = "2021"
 license = "MIT OR Apache-2.0"
 
 # Split keyboard example

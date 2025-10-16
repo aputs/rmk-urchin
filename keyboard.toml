@@ -4,7 +4,7 @@ product_name = "rmk-urchin"
 vendor_id = 0x4c4b
 product_id = 0x4643
 manufacturer = "RMK"
-chip = "nrf52840"
+board = "nice!nano_v2"
 
 [layout]
 # WARNING: Currently row2col/col2row is set in RMK's feature gate, row2col config here is valid ONLY when you're using cloud compilation.
@@ -12,7 +12,7 @@ chip = "nrf52840"
 # row2col = true
 rows = 4
 cols = 10
-layers = 6
+layers = 5
 keymap = [
   [
     [
@@ -66,14 +66,19 @@ keymap = [
   ]
 ]
 
+[rmk]
+ble_profiles_num = 3
+debounce_time = 10
+
 [storage]
-clear_storage = true
+clear_storage = false
 
 [ble]
 enabled = true
 
 [behavior]
-tap_hold = { enable_hrm = true, prior_idle_time = "100ms", hold_timeout = "150ms", post_wait_time = "50ms" }
+# tap_hold = { enable_hrm = true, permissive_hold = true, chordal_hold = true, hold_on_other_press = true, prior_idle_time = "120ms", hold_timeout = "250ms" }
+tap_hold = { enable_hrm = false, hold_on_other_press = true, hold_timeout = "200ms" }
 
 [split]
 connection = "ble"
