@@ -7,9 +7,7 @@ manufacturer = "RMK"
 board = "nice!nano_v2"
 
 [layout]
-# WARNING: Currently row2col/col2row is set in RMK's feature gate, row2col config here is valid ONLY when you're using cloud compilation.
-# Checkout doc here: https://rmk.rs/docs/user_guide/faq.html#my-matrix-is-row2col-the-matrix-doesn-t-work
-# row2col = true
+row2col = false
 rows = 4
 cols = 10
 layers = 5
@@ -29,14 +27,14 @@ keymap = [
     ],
     [
       "A",
-      "MT(S,LGui)",
-      "MT(H,LAlt)",
-      "MT(T,LCtrl)",
-      "MT(G,LShift)",
-      "MT(Y,RShift)",
-      "MT(N,RCtrl)",
-      "MT(E,RAlt)",
-      "MT(O,RGui)",
+      "S",
+      "H",
+      "T",
+      "G",
+      "Y",
+      "N",
+      "E",
+      "O",
       "I"
     ],
     [
@@ -55,10 +53,10 @@ keymap = [
       "_",
       "_",
       "_",
-      "LT(2,Enter)",
-      "LT(1,Tab)",
-      "LT(4,Space)",
-      "LT(3,Backspace)",
+      "Enter",
+      "Tab",
+      "Space",
+      "Backspace",
       "_",
       "_",
       "_"
@@ -68,7 +66,7 @@ keymap = [
 
 [rmk]
 ble_profiles_num = 3
-debounce_time = 10
+debounce_time = 50
 
 [storage]
 clear_storage = false
@@ -76,9 +74,14 @@ clear_storage = false
 [ble]
 enabled = true
 
-[behavior]
-# tap_hold = { enable_hrm = true, permissive_hold = true, chordal_hold = true, hold_on_other_press = true, prior_idle_time = "120ms", hold_timeout = "250ms" }
-tap_hold = { enable_hrm = false, hold_on_other_press = true, hold_timeout = "200ms" }
+[behavior.tap_hold]
+enable_hrm = true
+permissive_hold = true
+chordal_hold = true
+hold_on_other_press = true
+prior_idle_time = "120ms"
+hold_timeout = "150ms"
+post_wait_time = "50ms"
 
 [split]
 connection = "ble"

@@ -40,16 +40,16 @@
         "KC_SLASH"
       ],
       [
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
+        -1,
+        -1,
+        -1,
         "LT2(KC_ENTER)",
         "LT1(KC_TAB)",
         "LT4(KC_SPACE)",
         "LT3(KC_BSPACE)",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS"
+        -1,
+        -1,
+        -1
       ]
     ],
     [
@@ -89,18 +89,7 @@
         "KC_7",
         "KC_8"
       ],
-      [
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS"
-      ]
+      [-1, -1, -1, "KC_TRNS", "KC_NO", "KC_TRNS", "KC_TRNS", -1, -1, -1]
     ],
     [
       [
@@ -116,7 +105,7 @@
         "RCTL(KC_BSLASH)"
       ],
       [
-        "LSFT(KC_GRAVE)",
+        "KC_TRNS",
         "KC_LGUI",
         "KC_LALT",
         "KC_LCTRL",
@@ -139,22 +128,11 @@
         "LSFT(KC_SCOLON)",
         "LSFT(KC_QUOTE)"
       ],
-      [
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS"
-      ]
+      [-1, -1, -1, "KC_NO", "KC_TRNS", "KC_TRNS", "KC_TRNS", -1, -1, -1]
     ],
     [
       [
-        "KC_TRNS",
+        "QK_BOOT",
         "KC_TRNS",
         "KC_TRNS",
         "KC_TRNS",
@@ -189,18 +167,7 @@
         "KC_TRNS",
         "KC_TRNS"
       ],
-      [
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS"
-      ]
+      [-1, -1, -1, "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_NO", -1, -1, -1]
     ],
     [
       [
@@ -239,18 +206,7 @@
         "KC_TRNS",
         "KC_TRNS"
       ],
-      [
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS"
-      ]
+      [-1, -1, -1, "KC_TRNS", "KC_TRNS", "KC_NO", "KC_TRNS", -1, -1, -1]
     ]
   ],
   "encoder_layout": [[], [], [], [], []],
@@ -292,7 +248,7 @@
   "vial_protocol": 6,
   "via_protocol": 9,
   "tap_dance": [
-    ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 200],
+    ["KC_TAB", "LT1(KC_NO)", "KC_ESCAPE", "TO(1)", 200],
     ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 200],
     ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 200],
     ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 200],
