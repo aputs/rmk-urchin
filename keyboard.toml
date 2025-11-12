@@ -80,7 +80,7 @@ permissive_hold = true
 chordal_hold = true
 hold_on_other_press = true
 prior_idle_time = "120ms"
-hold_timeout = "150ms"
+hold_timeout = "200ms"
 post_wait_time = "50ms"
 
 [split]

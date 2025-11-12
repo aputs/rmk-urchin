@@ -133,15 +133,15 @@
     [
       [
         "QK_BOOT",
+        "USER05",
         "KC_TRNS",
         "KC_TRNS",
-        "KC_TRNS",
-        "KC_TRNS",
+        "USER06",
         "KC_MUTE",
         "KC_VOLD",
         "KC_VOLU",
-        "USER06",
-        "USER05"
+        "KC_MPLY",
+        "KC_MSTP"
       ],
       [
         "KC_TRNS",
@@ -248,7 +248,7 @@
   "vial_protocol": 6,
   "via_protocol": 9,
   "tap_dance": [
-    ["KC_TAB", "LT1(KC_NO)", "KC_ESCAPE", "TO(1)", 200],
+    ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 200],
     ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 200],
     ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 200],
     ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 200],
