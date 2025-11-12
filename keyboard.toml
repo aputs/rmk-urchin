@@ -23,18 +23,18 @@ keymap = [
       "F",
       "U",
       "P",
-      "Backslash"
+      "BSLS"
     ],
     [
       "A",
-      "S",
-      "H",
-      "T",
-      "G",
-      "Y",
-      "N",
-      "E",
-      "O",
+      "MT(S,LGUI)",
+      "MT(H,LALT)",
+      "MT(T,LCTL)",
+      "MT(G,LSFT)",
+      "MT(Y,RSFT)",
+      "MT(N,RCTL)",
+      "MT(E,RALT)",
+      "MT(O,RGUI)",
       "I"
     ],
     [
@@ -45,43 +45,183 @@ keymap = [
       "V",
       "K",
       "L",
-      ",",
-      ".",
-      "/"
+      "COMMA",
+      "DOT",
+      "SLASH"
     ],
     [
       "_",
       "_",
       "_",
-      "Enter",
-      "Tab",
-      "Space",
-      "Backspace",
+      "LT(2,ENTER)",
+      "LT(1,TAB)",
+      "LT(4,SPACE)",
+      "LT(3,BACKSPACE)",
       "_",
       "_",
       "_"
     ]
+  ],
+  [
+    [
+      "GRAVE",
+      "_",
+      "_",
+      "_",
+      "_",
+      "LEFT",
+      "DOWN",
+      "UP",
+      "RIGHT",
+      "WM(BSLS,RCTRL)"
+    ],
+    [
+      "WM(GRAVE,RSFT)",
+      "LGUI",
+      "LALT",
+      "LCTRL",
+      "LSHIFT",
+      "9",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    [
+      "ESCAPE",
+      "_",
+      "_",
+      "_",
+      "_",
+      "0",
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    ["_", "_", "_", "_", "NO", "_", "_", "_", "_", "_"]
+  ],
+  [
+    [
+      "GRAVE",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "DELETE",
+      "PGUP",
+      "PGDN",
+      "WM(BSLS,RCTRL)"
+    ],
+    [
+      "_",
+      "LGUI",
+      "LALT",
+      "LCTRL",
+      "LSHIFT",
+      "[",
+      "MINUS",
+      "EQUAL",
+      ";",
+      "QUOTE"
+    ],
+    [
+      "ESCAPE",
+      "_",
+      "_",
+      "_",
+      "_",
+      "]",
+      "SHIFTED(MINUS)",
+      "SHIFTED(EQUAL)",
+      "SHIFTED(;)",
+      "SHIFTED(QUOTE)"
+    ],
+    ["_", "_", "_", "_", "_", "_", "_", "_", "_", "_"]
+  ],
+  [
+    [
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "MUTE",
+      "VOLD",
+      "VOLU",
+      "MPLY",
+      "MSTP"
+    ],
+    [
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_"
+    ],
+    [
+      "ESCAPE",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_"
+    ],
+    ["_", "_", "_", "_", "_", "_", "_", "_", "_", "_"]
+  ],
+  [
+    [
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_"
+    ],
+    [
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_"
+    ],
+    [
+      "ESCAPE",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_",
+      "_"
+    ],
+    ["_", "_", "_", "_", "_", "_", "_", "_", "_", "_"]
   ]
 ]
 
-[rmk]
-ble_profiles_num = 3
-debounce_time = 50
-
-[storage]
-clear_storage = false
-
 [ble]
 enabled = true
-
-[behavior.tap_hold]
-enable_hrm = true
-permissive_hold = true
-chordal_hold = true
-hold_on_other_press = true
-prior_idle_time = "120ms"
-hold_timeout = "200ms"
-post_wait_time = "50ms"
 
 [split]
 connection = "ble"
@@ -93,13 +233,13 @@ row_offset = 0
 col_offset = 0
 
 [split.central.matrix]
-input_pins = [
+row_pins = [
   "P1_00",
   "P0_11",
   "P1_04",
   "P1_06",
 ]
-output_pins = [
+col_pins = [
   "P1_15",
   "P1_13",
   "P1_11",
@@ -114,13 +254,13 @@ row_offset = 0
 col_offset = 5
 
 [split.peripheral.matrix]
-input_pins = [
+row_pins = [
   "P1_13",
   "P1_11",
   "P0_10",
   "P0_09",
 ]
-output_pins = [
+col_pins = [
   "P0_24",
   "P1_00",
   "P0_11",
@@ -134,5 +274,13 @@ output_pins = [
 # row_offset = 2
 # col_offset = 2
 # serial = [{ instance = "UART0", tx_pin = "PIN_0", rx_pin = "PIN_1" }]
-# input_pins = ["PIN_9", "PIN_11"]
-# output_pins = ["PIN_10"]
+# row_pins = ["PIN_9", "PIN_11"]
+# col_pins = ["PIN_10"]
+
+[rmk]
+split_peripherals_num = 1
+ble_profiles_num = 3
+debounce_time = 50
+
+[host]
+unlock_keys = [[0, 0], [0, 1]]
