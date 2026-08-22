@@ -39,6 +39,7 @@ rmk = { git = "https://github.com/rmk-rs/rmk", rev = "6fa9805c52935432f026ab0443
 
 cortex-m = "0.7.7"
 cortex-m-rt = "0.7.5"
+embedded-hal = "1.0"
 defmt = "1.0"
 defmt-rtt = "1.0"
 embassy-executor = { version = "0.10", features = [
