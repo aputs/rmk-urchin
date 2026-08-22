@@ -120,4 +120,4 @@ ble_profiles_num = 3
 debounce_time = 30
 
 [host]
-unlock_keys = [[0, 0], [0, 1]]
+unlock_keys = [[0, 5], [0, 6]]
