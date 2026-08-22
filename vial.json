@@ -38,6 +38,11 @@
       "name": "SWITCH",
       "title": "Switch default output mode between USB/BLE",
       "shortName": "Switch\nOutput"
+    },
+    {
+      "name": "CLR_SPLIT",
+      "title": "Clear split peer bond (hold 5s) and re-pair",
+      "shortName": "Clear\nSplit"
     }
   ],
   "matrix": {
