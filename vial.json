@@ -1,1 +1,91 @@
-{"version": 1, "uid": 16882930253541522617, "layout": [[["KC_Q", "KC_D", "KC_R", "KC_W", "KC_B", "KC_J", "KC_F", "KC_U", "KC_P", "KC_BSLASH"], ["KC_A", "LGUI_T(KC_S)", "LALT_T(KC_H)", "LCTL_T(KC_T)", "LSFT_T(KC_G)", "RSFT_T(KC_Y)", "RCTL_T(KC_N)", "RALT_T(KC_E)", "RGUI_T(KC_O)", "KC_I"], ["KC_Z", "KC_X", "KC_M", "KC_C", "KC_V", "KC_K", "KC_L", "KC_COMMA", "KC_DOT", "KC_SLASH"], [-1, -1, -1, "LT2(KC_ENTER)", "LT1(KC_TAB)", "LT4(KC_SPACE)", "LT3(KC_BSPACE)", -1, -1, -1]], [["KC_GRAVE", "KC_F1", "KC_F2", "KC_F3", "KC_F4", "KC_LEFT", "KC_DOWN", "KC_UP", "KC_RIGHT", "RCTL(KC_BSLASH)"], ["RSFT(KC_GRAVE)", "KC_LGUI", "KC_LALT", "KC_LCTRL", "KC_LSHIFT", "KC_9", "KC_1", "KC_2", "KC_3", "KC_4"], ["KC_ESCAPE", "KC_F5", "KC_F6", "KC_F7", "KC_F8", "KC_0", "KC_5", "KC_6", "KC_7", "KC_8"], [-1, -1, -1, "KC_TRNS", "KC_NO", "KC_F9", "KC_F10", -1, -1, -1]], [["KC_GRAVE", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_F12", "KC_DELETE", "KC_PGUP", "KC_PGDOWN", "RCTL(KC_BSLASH)"], ["KC_TRNS", "KC_LGUI", "KC_LALT", "KC_LCTRL", "KC_LSHIFT", "KC_LBRACKET", "KC_MINUS", "KC_EQUAL", "KC_SCOLON", "KC_QUOTE"], ["KC_ESCAPE", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_RBRACKET", "LSFT(KC_MINUS)", "LSFT(KC_EQUAL)", "LSFT(KC_SCOLON)", "LSFT(KC_QUOTE)"], [-1, -1, -1, "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", -1, -1, -1]], [["KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_MUTE", "KC_VOLD", "KC_VOLU", "KC_MPLY", "KC_MSTP"], ["KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS"], ["KC_ESCAPE", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS"], [-1, -1, -1, "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", -1, -1, -1]], [["KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS"], ["KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS"], ["KC_ESCAPE", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS"], [-1, -1, -1, "KC_TRNS", "KC_TRNS", "KC_TRNS", "KC_TRNS", -1, -1, -1]]], "encoder_layout": [[], [], [], [], []], "layout_options": -1, "macro": [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], "vial_protocol": 6, "via_protocol": 9, "tap_dance": [["KC_NO", "KC_NO", "KC_NO", "KC_NO", 250], ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 250], ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 250], ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 250], ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 250], ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 250], ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 250], ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 250]], "combo": [["KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"], ["KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"], ["KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"], ["KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"], ["KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"], ["KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"], ["KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"], ["KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"]], "key_override": [], "alt_repeat_key": [], "settings": {"2": 50, "6": 1000, "7": 200, "18": 20, "19": 20, "22": 0, "23": 1, "25": 0, "26": 0, "27": 300}}
+{
+  "name": "rmk-urchin",
+  "vendorId": "0x4C4B",
+  "productId": "0x4643",
+  "lighting": "none",
+  "customKeycodes": [
+    {
+      "name": "BT0",
+      "title": "Bluetooth Channel 0",
+      "shortName": "BT0"
+    },
+    {
+      "name": "BT1",
+      "title": "Bluetooth Channel 1",
+      "shortName": "BT1"
+    },
+    {
+      "name": "BT2",
+      "title": "Bluetooth Channel 2",
+      "shortName": "BT2"
+    },
+    {
+      "name": "NEXT_BT",
+      "title": "Switch to the next Bluetooth channel",
+      "shortName": "Next\nBT"
+    },
+    {
+      "name": "PREV_BT",
+      "title": "Switch to the previous Bluetooth channel",
+      "shortName": "Prev\nBT"
+    },
+    {
+      "name": "CLR_BT",
+      "title": "Clear bond info for current channel",
+      "shortName": "Clear\nBT"
+    },
+    {
+      "name": "SWITCH",
+      "title": "Switch default output mode between USB/BLE",
+      "shortName": "Switch\nOutput"
+    }
+  ],
+  "matrix": {
+    "rows": 4,
+    "cols": 10
+  },
+  "layouts": {
+    "keymap": [
+      [
+        "0,0",
+        "0,1",
+        "0,2",
+        "0,3",
+        "0,4",
+        "",
+        "0,5",
+        "0,6",
+        "0,7",
+        "0,8",
+        "0,9"
+      ],
+      [
+        "1,0",
+        "1,1",
+        "1,2",
+        "1,3",
+        "1,4",
+        "",
+        "1,5",
+        "1,6",
+        "1,7",
+        "1,8",
+        "1,9"
+      ],
+      [
+        "2,0",
+        "2,1",
+        "2,2",
+        "2,3",
+        "2,4",
+        "",
+        "2,5",
+        "2,6",
+        "2,7",
+        "2,8",
+        "2,9"
+      ],
+      ["", "", "", "3,3", "3,4", "", "3,5", "3,6", "", "", ""]
+    ]
+  }
+}
