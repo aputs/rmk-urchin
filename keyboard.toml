@@ -112,7 +112,7 @@ col_pins = [
 enable_flow_tap = false
 prior_idle_time = "120ms" # unused while flow tap is off
 hold_on_other_press = true
-hold_timeout = "150ms"
+hold_timeout = "200ms" # 150ms dropped letters on slow taps; hold latency unaffected (hold_on_other_press)
 gap_timeout = "200ms"
 
 [rmk]
