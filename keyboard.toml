@@ -9,6 +9,10 @@ board = "nice!nano_v2"
 [layout]
 rows = 4
 cols = 10
+# 34 physical keys: rows 0-2 are full (5+5), but the thumb row (row 3) has
+# only 4 keys - the inner 2 per half: (3,3) (3,4) | (3,5) (3,6).
+# The 6 outer row-3 slots ((3,0)-(3,2), (3,7)-(3,9)) are unwired matrix
+# placeholders; keymap entries bound there are unreachable.
 map = """
 (0,0) (0,1) (0,2) (0,3) (0,4) (0,5) (0,6) (0,7) (0,8) (0,9)
 (1,0) (1,1) (1,2) (1,3) (1,4) (1,5) (1,6) (1,7) (1,8) (1,9)
