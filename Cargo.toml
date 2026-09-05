@@ -30,11 +30,16 @@ nrf-sdc = { git = "https://github.com/alexmoon/nrf-sdc", rev = "f54b6389ffa2750d
   "nrf52840",
   "peripheral",
 ] }
-rmk = { git = "https://github.com/rmk-rs/rmk", rev = "6fa9805c52935432f026ab0443b463bc6fde9d6b", features = [
+rmk = { git = "https://github.com/rmk-rs/rmk", rev = "6fa9805c52935432f026ab0443b463bc6fde9d6b", default-features = false, features = [
   "adafruit_bl",
   "async_matrix",
   "nrf52840_ble",
   "split",
+  "storage",
+  "vial",
+  "host_lock",
+  "watchdog",
+  "usb_log",
 ] }
 
 cortex-m = "0.7.7"
@@ -61,7 +66,7 @@ embassy-time = { version = "0.5", features = [
   "defmt-timestamp-uptime",
   "tick-hz-32_768"
 ] }
-panic-probe = { version = "1.0", features = ["print-defmt"] }
+panic-probe = "1.0"
 static_cell = "2"
 
 [build-dependencies]
