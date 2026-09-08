@@ -27,39 +27,35 @@ layers = 5
 keys = """
 Q D R W B J F U P BSLS
 A MT(S,LGui) MT(H,LAlt) MT(T,LCtrl) MT(G,LShift) MT(Y,RShift) MT(N,RCtrl) MT(E,RAlt) MT(O,RGui) I
-Z X M C V K L COMMA DOT SLASH
-_ _ _ LT(2,ENTER) LT(1,TAB) LT(4,SPACE) LT(3,BACKSPACE) _ _ User7
+Z X M C V K L Comma Dot Slash
+_ _ _ LT(2,ENTER) LT(1,TAB) LT(4,SPACE) LT(3,Backspace) _ _ _
 """
-
 [[keymap.layer]] # layer 1
 keys = """
-GRAVE _ _ _ _ LEFT DOWN UP RIGHT WM(BSLS,RCtrl)
-WM(GRAVE,RShift) LGui LAlt LCtrl LShift 9 1 2 3 4
-ESCAPE _ _ _ _ 0 5 6 7 8
-_ _ _ _ NO _ _ _ _ _
+Grave F1 F2 F3 F4 Left Down Up Right WM(BSLS,RCtrl)
+WM(Grave,RShift) LGui LAlt LCtrl LShift 9 1 2 3 4
+Escape F5 F6 F7 F8 0 5 6 7 8
+_ _ _ _ No F9 F10 _ _ _
 """
-
 [[keymap.layer]] # layer 2
 keys = """
-GRAVE _ _ _ _ _ DELETE PGUP PGDN WM(BSLS,RCtrl)
-_ LGui LAlt LCtrl LShift [ MINUS EQUAL ; QUOTE
-ESCAPE _ _ _ _ ] SHIFTED(MINUS) SHIFTED(EQUAL) SHIFTED(;) SHIFTED(QUOTE)
+Grave _ _ _ _ F12 Delete PageUp PageDown WM(BSLS,RCtrl)
+_ LGui LAlt LCtrl LShift LeftBracket Minus Equal Semicolon Quote
+Escape _ _ _ _ RightBracket SHIFTED(Minus) SHIFTED(Equal) SHIFTED(Semicolon) SHIFTED(Quote)
 _ _ _ _ _ _ _ _ _ _
 """
-
 [[keymap.layer]] # layer 3
 keys = """
-_ _ _ _ _ MUTE VOLD VOLU MPLY MSTP
-_ _ _ _ _ _ _ _ _ _
-ESCAPE _ _ _ _ _ _ _ _ _
+Bootloader Reboot ClearEeprom _ User06 User06 AudioVolDown AudioVolUp MediaPlayPause MediaStop
+_ _ _ _ _ _ User00 User01 User02 _
+Escape _ _ _ _ _ User04 User03 User05 User07
 _ _ _ _ _ _ _ _ _ _
 """
-
 [[keymap.layer]] # layer 4
 keys = """
 _ _ _ _ _ _ _ _ _ _
 _ _ _ _ _ _ _ _ _ _
-ESCAPE _ _ _ _ _ _ _ _ _
+Escape _ _ _ _ _ _ _ _ _
 _ _ _ _ _ _ _ _ _ _
 """
 
@@ -115,8 +111,8 @@ col_pins = [
 # Hold-priority: modifier wins unless it's a fast clean tap.
 enable_flow_tap = false
 prior_idle_time = "120ms" # unused while flow tap is off
-hold_on_other_press = true
-hold_timeout = "200ms" # 150ms dropped letters on slow taps; hold latency unaffected (hold_on_other_press)
+hold_on_other_press = false
+hold_timeout = "120ms" # faster tap resolution for fast typing; tap priority via hold_on_other_press = false
 gap_timeout = "200ms"
 
 [rmk]
