@@ -112,13 +112,13 @@ col_pins = [
 enable_flow_tap = false
 prior_idle_time = "120ms" # unused while flow tap is off
 hold_on_other_press = false
-hold_timeout = "120ms" # faster tap resolution for fast typing; tap priority via hold_on_other_press = false
+hold_timeout = "175ms" # widened for split link: press+release must round-trip peripheral->central inside this window or the tap resolves to hold (layer switch); tune down from 200 if layer-switch feels sluggish, up if taps still drop
 gap_timeout = "200ms"
 
 [rmk]
 split_peripherals_num = 1
 ble_profiles_num = 3
-debounce_time = 30
+debounce_time = 15 # faster per-key forwarding shrinks split round-trip latency, widening the effective tap window (raise back to 30 if you see double-presses)
 
 [host]
 unlock_keys = [[0, 5], [0, 6]]
