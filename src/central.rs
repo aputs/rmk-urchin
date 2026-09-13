@@ -7,7 +7,7 @@ use rmk::macros::rmk_central;
 
 #[rmk_central]
 mod keyboard_central {
-    #[register_processor(poll)]
+    #[register_processor]
     fn split_status_led() -> crate::split_led::SplitStatusLed<::embassy_nrf::gpio::Output<'static>>
     {
         crate::split_led::SplitStatusLed::new(

@@ -24,6 +24,10 @@ fn main() {
 
     generate_vial_config();
 
+    // Build-time diagnostic: print the tap-hold config actually compiled into this build,
+    // so we can prove the firmware carries the intended hold settings (vs stock 175ms/normal).
+    print_tap_hold_config();
+
     // Put `memory.x` in our output directory and ensure it's
     // on the linker search path.
     let out = &PathBuf::from(env::var_os("OUT_DIR").unwrap());
@@ -54,6 +58,24 @@ fn main() {
 
     // Use flip-link overflow check: https://github.com/knurling-rs/flip-link
     println!("cargo:rustc-linker=flip-link");
+}
+
+fn print_tap_hold_config() {
+    let Ok(content) = fs::read_to_string("keyboard.toml") else {
+        println!("cargo:warning=[config] keyboard.toml not read");
+        return;
+    };
+    let hold = content
+        .lines()
+        .find_map(|l| l.trim().strip_prefix("hold_timeout = "))
+        .map(|v| v.trim().trim_matches('"'))
+        .unwrap_or("unset");
+    let hop = content
+        .lines()
+        .find_map(|l| l.trim().strip_prefix("hold_on_other_press = "))
+        .map(|v| v.trim())
+        .unwrap_or("unset");
+    println!("cargo:warning=[config] compiled tap-hold -> hold_timeout={} hold_on_other_press={}", hold, hop);
 }
 
 fn generate_vial_config() {

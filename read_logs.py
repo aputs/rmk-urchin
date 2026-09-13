@@ -17,7 +17,7 @@ import sys
 import time
 
 CHILD_SRC = r"""
-import ctypes, ctypes.util, glob, os, sys
+import ctypes, ctypes.util, glob, os, sys, time
 CBAUD = 0o060000
 CSTOPB = 0x00000400
 CS8 = 0x00000300
@@ -54,8 +54,11 @@ t.c_iflag &= ~(IXON | IXOFF | IXANY | INLCR | ICRNL)
 t.c_cflag &= ~(CSTOPB | PARENB | CRTSCTS)
 t.c_cflag |= (CS8 | CLOCAL | CREAD)
 t.c_cflag = (t.c_cflag & ~CBAUD) | baud
-t.c_cc[6] = 0
-t.c_cc[7] = 1
+# VMIN=1, VTIME=0: block until >=1 byte so an idle port costs no CPU.
+# (VMIN=0/VTIME=1 returns empty reads every 0.1s, which this reader mistook
+#  for a disconnect and re-opened the port on -> a ~10Hz busy loop.)
+t.c_cc[6] = 1
+t.c_cc[7] = 0
 lib.tcsetattr(fd, 0, ctypes.byref(t))
 while True:
     try:
@@ -67,6 +70,8 @@ while True:
             os.write(1, data)
         except BrokenPipeError:
             break
+    else:
+        time.sleep(0.25)  # empty read/disconnect: backoff, don't spin
 """
 NO_PORT = 2  # child exit code when no USB-serial device is found
 

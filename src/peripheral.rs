@@ -7,7 +7,7 @@ use rmk::macros::rmk_peripheral;
 
 #[rmk_peripheral(id = 0)]
 mod keyboard_peripheral {
-    #[register_processor(poll)]
+    #[register_processor]
     fn split_status_led() -> crate::split_led::SplitStatusLed<::embassy_nrf::gpio::Output<'static>>
     {
         crate::split_led::SplitStatusLed::new(

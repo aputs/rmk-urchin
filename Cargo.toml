@@ -17,6 +17,10 @@ path = "src/central.rs"
 name = "peripheral"
 path = "src/peripheral.rs"
 
+[[bin]]
+name = "wipe"
+path = "src/wipe.rs"
+
 [dependencies]
 bt-hci = { version = "0.10", default-features = false, features = ["defmt"] }
 nrf-mpsl = { version = "0.4.0", features = [
@@ -30,11 +34,12 @@ nrf-sdc = { version = "0.4.0", features = [
   "nrf52840",
   "peripheral",
 ] }
-rmk = { git = "https://github.com/rmk-rs/rmk", rev = "4e432b4abfa203fe1da1b108c9c5ec76bc623c70", default-features = false, features = [
+rmk = { git = "https://github.com/rmk-rs/rmk", branch = "main", default-features = false, features = [
   "adafruit_bl",
   "async_matrix",
   "nrf52840_ble",
   "split",
+  "subrating",
   "storage",
   "vial",
   "host_lock",
@@ -44,6 +49,7 @@ rmk = { git = "https://github.com/rmk-rs/rmk", rev = "4e432b4abfa203fe1da1b108c9
 
 cortex-m = "0.7.7"
 cortex-m-rt = "0.7.5"
+nrf-pac = { version = "0.4.0", features = ["nrf52840"] }
 embedded-hal = "1.0"
 defmt = "1.0"
 defmt-rtt = "1.0"
