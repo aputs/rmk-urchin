@@ -47,6 +47,7 @@ rmk = { git = "https://github.com/rmk-rs/rmk", branch = "main", default-features
   "usb_log",
 ] }
 
+log = { version = "0.4", features = ["max_level_debug"] }
 cortex-m = "0.7.7"
 cortex-m-rt = "0.7.5"
 nrf-pac = { version = "0.4.0", features = ["nrf52840"] }
@@ -74,6 +75,15 @@ embassy-time = { version = "0.5", features = [
 ] }
 panic-probe = "1.0"
 static_cell = "2"
+
+# Local fork of rmk at the locked commit, with the BLE host-link slave latency
+# lowered (30/60 -> 4/0) to cut BT input lag. Upstream params are hardcoded in
+# rmk/src/ble/mod.rs::set_conn_params and not configurable via keyboard.toml.
+[patch."https://github.com/rmk-rs/rmk"]
+rmk = { path = "vendor/rmk/rmk" }
+rmk-config = { path = "vendor/rmk/rmk-config" }
+rmk-macro = { path = "vendor/rmk/rmk-macro" }
+rmk-types = { path = "vendor/rmk/rmk-types" }
 
 [build-dependencies]
 const-gen = "1.6"

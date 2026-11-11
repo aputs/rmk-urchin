@@ -1,0 +1,359 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  CARGO_TERM_COLOR: always
+  # Avoid installing all embedded targets from rust-toolchain.toml in host jobs.
+  RUSTUP_TOOLCHAIN: stable
+  CARGO_PROFILE_DEV_DEBUG: 0
+  CARGO_PROFILE_TEST_DEBUG: 0
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      code: ${{ github.event_name == 'workflow_dispatch' || steps.paths.outputs.code == 'true' }}
+      stable: ${{ steps.discover.outputs.stable }}
+      esp: ${{ steps.discover.outputs.esp }}
+    steps:
+      - uses: actions/checkout@v6
+      # Job-level filtering lets the final CI check complete for docs-only PRs.
+      - uses: dorny/paths-filter@v4
+        id: paths
+        if: github.event_name != 'workflow_dispatch'
+        with:
+          base: ${{ github.event_name == 'push' && github.event.before || '' }}
+          predicate-quantifier: every
+          filters: |
+            code:
+              - '**'
+              - '!docs/**'
+              - '!**/README*'
+              - '!CHANGELOG.md'
+              - '!AGENTS.md'
+              - '!CLAUDE.md'
+      - id: discover
+        if: github.event_name == 'workflow_dispatch' || steps.paths.outputs.code == 'true'
+        run: .github/ci/discover.sh
+
+  format:
+    needs: discover
+    if: needs.discover.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rustfmt
+      - run: .github/ci/format.sh
+
+  fetch-check:
+    needs: discover
+    if: needs.discover.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+      - run: bash scripts/fetch_all.sh --check
+
+  check:
+    needs: discover
+    if: needs.discover.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ci-check
+          workspaces: |
+            rmk -> ../target/ci/check
+            rmk-config -> ../target/ci/check
+            rmk-macro -> ../target/ci/check
+            rmk-types -> ../target/ci/check
+          cache-bin: false
+          save-if: ${{ github.event_name != 'pull_request' }}
+      - run: .github/ci/check.sh stable
+
+  nightly:
+    needs: discover
+    if: needs.discover.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@nightly
+      - run: .github/ci/check.sh nightly
+
+  test:
+    needs: discover
+    if: needs.discover.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ci-test-shared-v2
+          # The shared target also contains macrotest/trybuild workspaces.
+          # Per-workspace pruning would discard their build dependencies.
+          workspaces: |
+            rmk
+            rmk-config
+            rmk-macro
+            rmk-types
+          cache-targets: false
+          cache-directories: target/ci/test
+          cache-bin: false
+          save-if: ${{ github.event_name != 'pull_request' }}
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: nextest@0.9
+          fallback: none
+      - uses: cargo-bins/cargo-binstall@main
+      - name: Install cargo-expand binary
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: cargo binstall --no-confirm --disable-strategies compile cargo-expand
+      - run: .github/ci/test.sh
+
+  host:
+    needs: discover
+    if: needs.discover.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+          targets: wasm32-unknown-unknown
+      - name: Install host system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libdbus-1-dev pkg-config
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-pack
+          fallback: none
+      # host.sh pins the npx TypeScript version; there is no Node project here.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: .github/ci/host.sh
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ci-host
+          workspaces: rynk -> ../target/ci/host
+          cache-bin: false
+          save-if: ${{ github.event_name != 'pull_request' }}
+      - run: .github/ci/host.sh
+
+  qemu-rynk:
+    needs: discover
+    if: needs.discover.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: riscv32imac-unknown-none-elf
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ci-qemu-rynk
+          workspaces: |
+            examples/use_rust/qemu-riscv-rynk
+            rynk
+          cache-bin: false
+          save-if: ${{ github.event_name != 'pull_request' }}
+      - name: Install QEMU
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends qemu-system-riscv libdbus-1-dev pkg-config
+          qemu-system-riscv32 --version
+      - name: Run QEMU Rynk behavior verifier
+        working-directory: examples/use_rust/qemu-riscv-rynk
+        run: python3 run.py
+
+  build:
+    needs: discover
+    if: needs.discover.outputs.code == 'true'
+    name: build (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    env:
+      CLANG_PATH: /usr/bin/clang-21
+      LIBCLANG_PATH: /usr/lib/llvm-21/lib
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.discover.outputs.stable) }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+          components: ${{ matrix.bloat && github.event_name == 'pull_request' && 'llvm-tools' || '' }}
+      # Caching every example exceeded 10 GiB. Keep the expensive Pico W/ARMv8
+      # artifacts; other examples still share dependencies within each runner.
+      - uses: Swatinem/rust-cache@v2
+        if: matrix.cache
+        with:
+          shared-key: ci-examples-shared-v2-${{ matrix.name }}
+          workspaces: ${{ matrix.workspaces }}
+          cache-bin: false
+          save-if: ${{ github.event_name != 'pull_request' }}
+      - uses: cargo-bins/cargo-binstall@main
+        if: startsWith(matrix.target, 'thumb')
+      - name: Install flip-link binary
+        if: startsWith(matrix.target, 'thumb')
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: cargo binstall --no-confirm --disable-strategies compile flip-link
+      - name: Install ARM GCC
+        if: matrix.arm_gcc
+        run: |
+          sudo sed -i '/azure\.archive\.ubuntu\.com/d' /etc/apt/apt-mirrors.txt
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gcc-arm-none-eabi libnewlib-dev
+      - name: Prepare size comparison
+        if: github.event_name == 'pull_request' && matrix.bloat
+        run: |
+          echo "BASE_SHA=$(git merge-base HEAD origin/main)" >> "$GITHUB_ENV"
+          id=$(docker create ghcr.io/carlosperate/bloaty-action:latest)
+          sudo docker cp "$id:/usr/local/bin/bloaty" /usr/local/bin/bloaty
+          docker rm "$id" >/dev/null
+      - name: Build and compare examples
+        env:
+          EXAMPLES: ${{ toJson(matrix.examples) }}
+          TARGET: ${{ matrix.target }}
+          COMPARE_BASE: ${{ github.event_name == 'pull_request' && matrix.bloat }}
+        run: .github/ci/build-examples.sh
+      - name: Upload bloat data
+        if: github.event_name == 'pull_request' && matrix.bloat
+        uses: actions/upload-artifact@v7
+        with:
+          name: bloat-${{ matrix.name }}
+          path: bloat-data/
+          retention-days: 1
+
+  bloat-report:
+    if: github.event_name == 'pull_request' && needs.discover.outputs.code == 'true'
+    needs: [discover, build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v7
+        with:
+          path: bloat-artifacts
+          pattern: bloat-*
+          merge-multiple: true
+      - name: Generate report
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          report=$(.github/ci/bloat-report.sh bloat-artifacts)
+          mkdir -p bloat-comment
+          echo "$PR_NUMBER" > bloat-comment/pr-number.txt
+          echo "$report" > bloat-comment/report.md
+      - name: Upload comment data
+        uses: actions/upload-artifact@v7
+        with:
+          name: bloat-comment
+          path: bloat-comment/
+          retention-days: 1
+
+  build-esp:
+    needs: discover
+    if: needs.discover.outputs.code == 'true' && fromJson(needs.discover.outputs.esp)[0] != null
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: espup
+          fallback: none
+      - name: Resolve ESP toolchain versions
+        id: esp-version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "rust=$(gh api repos/esp-rs/rust-build/releases/latest --jq '.tag_name | ltrimstr("v")')" >> "$GITHUB_OUTPUT"
+          echo "espup=$(espup --version | cut -d ' ' -f 2)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache/restore@v5
+        id: esp-toolchain
+        with:
+          path: |
+            ~/.rustup/toolchains/esp
+            ~/export-esp.sh
+          key: esp-toolchain-${{ runner.os }}-${{ runner.arch }}-${{ steps.esp-version.outputs.rust }}-${{ steps.esp-version.outputs.espup }}
+      - name: Install esp toolchain
+        if: steps.esp-toolchain.outputs.cache-hit != 'true'
+        env:
+          ESP_RUST_VERSION: ${{ steps.esp-version.outputs.rust }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: espup install --targets esp32s3 --toolchain-version "$ESP_RUST_VERSION" --skip-version-parse
+      - uses: actions/cache/save@v5
+        if: github.event_name != 'pull_request' && steps.esp-toolchain.outputs.cache-hit != 'true'
+        with:
+          path: |
+            ~/.rustup/toolchains/esp
+            ~/export-esp.sh
+          key: ${{ steps.esp-toolchain.outputs.cache-primary-key }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ci-build-esp
+          workspaces: |
+            examples/use_config/esp32s3_ble -> ../../../target-esp
+            examples/use_rust/esp32s3_ble -> ../../../target-esp
+          cache-bin: false
+          save-if: ${{ github.event_name != 'pull_request' }}
+      - name: Build ESP examples
+        run: |
+          source "$HOME/export-esp.sh"
+          export CARGO_TARGET_DIR="$PWD/target-esp"
+          for dir in examples/use_rust/esp32s3_ble examples/use_config/esp32s3_ble; do
+            (cd "$dir" && CARGO_UNSTABLE_BUILD_STD=alloc,core cargo +esp build --release)
+          done
+
+  ci:
+    name: CI
+    if: always()
+    needs: [discover, format, fetch-check, check, nightly, test, host, qemu-rynk, build, build-esp, bloat-report]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require all selected checks
+        env:
+          NEEDS: ${{ toJson(needs) }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          needs = json.loads(os.environ["NEEDS"])
+          assert needs["discover"]["result"] == "success", "Change detection failed"
+          if needs["discover"]["outputs"]["code"] == "true":
+              for name, job in needs.items():
+                  if name == "bloat-report" and os.environ["EVENT"] != "pull_request":
+                      continue
+                  assert job["result"] == "success", f"{name}: {job['result']}"
+          print("All required checks passed (or documentation-only change).")
+          PY

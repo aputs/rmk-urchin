@@ -136,9 +136,10 @@ quick_tap_timeout = "0ms"
 # N -> RCtrl+W, Y -> RShift+B). Now:
 #   - flow tap: pressed during a typing burst (< prior_idle_time) -> always the letter
 #   - unilateral_tap: rolling into a same-hand key -> the letter (mods are for the other hand)
-#   - permissive_hold: other-hand key pressed AND released inside the hold -> the modifier
+#   - hold_on_other_press: other-hand key pressed -> the modifier, release order doesn't matter
+#     (permissive_hold required releasing the other key first; flow tap still protects fast g->y)
 #   - 250ms hold_timeout: a lone slow press needs a clearly deliberate hold to become a mod
-HRM = { enable_flow_tap = true, unilateral_tap = true, permissive_hold = true, hold_timeout = "250ms", gap_timeout = "100ms" }
+HRM = { enable_flow_tap = true, unilateral_tap = true, permissive_hold = false, hold_on_other_press = true, hold_timeout = "250ms", gap_timeout = "100ms" }
 # Thumb layer-taps. No flow tap (layers must work right after typing a letter).
 # permissive_hold keeps the cross-half fix: the left thumb's events cross the BLE split
 # link and can land after the right-hand key, so the decision is made when the OTHER key

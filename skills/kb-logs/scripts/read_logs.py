@@ -1,1 +1,1 @@
-../../../read_logs.py
+../../../scripts/read_logs.py

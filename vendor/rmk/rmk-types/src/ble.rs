@@ -1,0 +1,61 @@
+//! BLE status types and the limits an identity string has to clear.
+
+use postcard::experimental::max_size::MaxSize;
+use serde::{Deserialize, Serialize};
+
+/// Longest name a legacy advertisement can carry: flags (3), the battery + HID service
+/// UUIDs (6) and the appearance (4) claim the rest of its 31 bytes.
+pub const BLE_ADV_NAME_MAX_LEN: usize = 16;
+
+/// BLE state (what the BLE subsystem is currently doing).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, MaxSize)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(into_wasm_abi, from_wasm_abi))]
+pub enum BleState {
+    /// The BLE is advertising.
+    Advertising,
+    /// The BLE is connected.
+    Connected,
+    /// The BLE is not in use (USB mode or sleep mode, default).
+    Inactive,
+}
+
+/// Unified BLE status: active profile, connection state, and whether that profile currently has bond information.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, MaxSize)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(into_wasm_abi, from_wasm_abi))]
+pub struct BleStatus {
+    pub profile: u8,
+    pub state: BleState,
+    /// Whether the active BLE profile currently has bond information, independent of connection state.
+    pub bonded: bool,
+}
+
+impl Default for BleStatus {
+    fn default() -> Self {
+        Self {
+            profile: 0,
+            state: BleState::Inactive,
+            bonded: false,
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{BleState, BleStatus};
+
+    #[test]
+    fn default_ble_status_is_profile_zero_and_inactive() {
+        assert_eq!(
+            BleStatus::default(),
+            BleStatus {
+                profile: 0,
+                state: BleState::Inactive,
+                bonded: false,
+            }
+        );
+    }
+}

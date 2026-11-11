@@ -11,16 +11,16 @@ USB-serial (CDC-ACM) interface. No dependencies (termios via `ctypes`).
 
 ## Run
 
-From the repo root, the script is executable:
+From the repo root, the script lives in `scripts/`:
 
 ```shell
-./read_logs.py                 # 115200 baud, 8s
-./read_logs.py 115200 30       # 30s
-./read_logs.py 115200 0 --follow   # stream until Ctrl-C (auto-reconnects)
-python3 read_logs.py 9600      # try 9600 if 115200 output is garbled
+./scripts/read_logs.py                 # 115200 baud, 8s
+./scripts/read_logs.py 115200 30       # 30s
+./scripts/read_logs.py 115200 0 --follow   # stream until Ctrl-C (auto-reconnects)
+python3 scripts/read_logs.py 9600      # try 9600 if 115200 output is garbled
 ```
 
-`skills/kb-logs/scripts/read_logs.py` is a symlink to the repo-root `read_logs.py`
+`skills/kb-logs/scripts/read_logs.py` is a symlink to `scripts/read_logs.py`
 (single source of truth), so both paths behave identically.
 
 ## How it works
