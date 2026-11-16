@@ -84,6 +84,9 @@ pub(crate) fn set_peripheral_connected(id: usize, connected: bool) {
 /// Latch peripheral `id`'s battery status and broadcast the change.
 pub(crate) fn set_peripheral_battery(id: usize, battery: BatteryStatus) {
     if update_slot(id, |s| s.battery = battery) {
+        if let BatteryStatus::Available { level: Some(level), charge_state } = battery {
+            info!("[battery] peripheral {}: {}% {:?}", id, level, charge_state);
+        }
         publish_event(PeripheralBatteryEvent {
             id,
             state: BatteryStatusEvent(battery),

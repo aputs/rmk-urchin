@@ -175,6 +175,19 @@ impl<P: PacketPool> Runnable for BleBatteryServer<'_, '_, '_, P> {
             while let Some(newer) = self.sub.try_next_message_pure() {
                 state = newer;
             }
+            // Heartbeat: log current battery levels so any USB log session
+            // shows the latest values (wakes on key activity / level change).
+            if let BatteryStatus::Available { level: Some(level), .. } = state.0 {
+                info!("[battery] central: {}%", level);
+            }
+            #[cfg(feature = "split")]
+            for id in 0..crate::SPLIT_BATTERY_PERIPHERALS_NUM {
+                if let Some(BatteryStatus::Available { level: Some(level), .. }) =
+                    crate::split::driver::current_peripheral_battery_status(id)
+                {
+                    info!("[battery] peripheral {}: {}%", id, level);
+                }
+            }
             if let BatteryStatus::Available { level: Some(level), .. } = state.0
                 && let Err(e) = self.battery_level.notify(self.conn, &level, true).await
             {

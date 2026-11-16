@@ -105,6 +105,9 @@ impl BatteryProcessor {
     fn commit(&mut self, status: BatteryStatus) {
         self.battery_status = status;
         BATTERY_STATUS.lock(|c| c.set(status));
+        if let BatteryStatus::Available { level: Some(level), charge_state } = status {
+            info!("[battery] level: {}% {:?}", level, charge_state);
+        }
         publish_event(BatteryStatusEvent::from(status));
     }
 
