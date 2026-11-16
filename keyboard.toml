@@ -51,9 +51,9 @@ _ _ _ _ _ _ _ _ _ _
 
 [[keymap.layer]] # layer 3
 keys = """
-Bootloader Reboot ClearEeprom _ User06 Mute AudioVolDown AudioVolUp MediaPlayPause MediaStop
-_ _ _ _ _ _ User00 User01 User02 _
-Escape _ _ _ _ _ _ _ _ _
+Bootloader Reboot ClearEeprom User07 User06 Mute AudioVolDown AudioVolUp MediaPlayPause MediaStop
+_ _ _ _ _ User05 User00 User01 User02 _
+Escape _ _ _ _ Mprv Mnxt _ User06 Bootloader
 _ _ _ _ _ _ _ _ _ _
 """
 

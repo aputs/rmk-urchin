@@ -128,9 +128,10 @@ def main():
     new_layout = [build_layout(l) for l in layers]
 
     src = json.load(open(f"{ROOT}/current.json"))
-    out = {"version": src.get("version", 1),
-           "uid": src.get("uid"),
-           "layout": new_layout}
+    # Replace only the layout; keep Vial's other sections (settings, combos,
+    # tap dances, macros, protocol versions) so the import stays complete.
+    out = dict(src)
+    out["layout"] = new_layout
     json.dump(out, open(f"{ROOT}/current.json", "w"), separators=(",", ":"))
     print(f"wrote current.json ({len(layers)} layers)")
 
