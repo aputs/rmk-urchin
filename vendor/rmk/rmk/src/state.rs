@@ -106,7 +106,7 @@ pub(crate) fn set_preferred_connection(t: ConnectionType) {
 /// Load the preferred connection type at startup.
 ///
 /// With the `storage` feature, reads the persisted `ConnectionType` from flash;
-/// otherwise falls back to a build-time default — `Ble` when USB is disabled, `Usb` otherwise.
+/// otherwise defaults to `Ble`: USB is for power/charging unless switched manually.
 #[cfg(feature = "_ble")]
 pub(crate) async fn load_preferred_connection() -> ConnectionType {
     #[cfg(feature = "storage")]
@@ -115,11 +115,7 @@ pub(crate) async fn load_preferred_connection() -> ConnectionType {
     {
         return c;
     }
-    if cfg!(feature = "_no_usb") {
-        ConnectionType::Ble
-    } else {
-        ConnectionType::Usb
-    }
+    ConnectionType::Ble
 }
 
 #[cfg(all(feature = "_ble", not(feature = "_no_usb")))]
