@@ -180,6 +180,11 @@ impl<P: PacketPool> Runnable for BleBatteryServer<'_, '_, '_, P> {
             if let BatteryStatus::Available { level: Some(level), .. } = state.0 {
                 info!("[battery] central: {}%", level);
             }
+            info!(
+                "[output] preferred: {:?}, active: {:?}",
+                crate::state::current_connection_status().preferred,
+                crate::state::active_transport()
+            );
             #[cfg(feature = "split")]
             for id in 0..crate::SPLIT_BATTERY_PERIPHERALS_NUM {
                 if let Some(BatteryStatus::Available { level: Some(level), .. }) =

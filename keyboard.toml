@@ -71,34 +71,14 @@ enabled = true
 [split]
 connection = "ble"
 
+# Left half is the central (connects to hosts); right half is the peripheral.
 [split.central]
-rows = 4
-cols = 5
-row_offset = 0
-col_offset = 5
-
-[split.central.matrix]
-row_pins = [
-  "P1_13",
-  "P1_11",
-  "P0_10",
-  "P0_09",
-]
-col_pins = [
-  "P0_24",
-  "P1_00",
-  "P0_11",
-  "P1_04",
-  "P1_06",
-]
-
-[[split.peripheral]]
 rows = 4
 cols = 5
 row_offset = 0
 col_offset = 0
 
-[split.peripheral.matrix]
+[split.central.matrix]
 row_pins = [
   "P1_00",
   "P0_11",
@@ -111,6 +91,27 @@ col_pins = [
   "P1_11",
   "P0_10",
   "P0_09",
+]
+
+[[split.peripheral]]
+rows = 4
+cols = 5
+row_offset = 0
+col_offset = 5
+
+[split.peripheral.matrix]
+row_pins = [
+  "P1_13",
+  "P1_11",
+  "P0_10",
+  "P0_09",
+]
+col_pins = [
+  "P0_24",
+  "P1_00",
+  "P0_11",
+  "P1_04",
+  "P1_06",
 ]
 
 [behavior.morse]
